@@ -1,0 +1,58 @@
+
+source("C:/Users/HP/Desktop/ISEP2CoursR2024/Homework 7.R")
+
+## Quantity conso en unite standard (kg)
+cereales3 [, qtty_cons_kg:= poids_cons*Qtty_cons/1000]
+
+is.numeric(cereales3$Qtty_cons)
+is.numeric(cereales3$poids_cons)
+# on convertit poids en numeric 
+cereales3[,poids_cons:=as.numeric(poids_cons)]
+is.numeric(cereales3$poids_cons)
+
+#cereales3 %>% summarise(qtty_cons_kg) :: a regarder 
+
+cereales3 [, qtty_cons_kg:= poids_cons*Qtty_cons/1000]
+cereales3[,summary(qtty_cons_kg)]
+
+
+### HomeWork 
+
+#' calculer la quantite achete en kg; 
+#' calculer le prix unitaire ;
+#' Calculer les depenses de consommations ; 
+#' Valeurs aberrantes :: corrections ; 
+
+
+###1) Calculons la quantité achetée
+## Poids 
+library(data.table)
+fusion <- data.table(fusion)
+setnames(fusion,"poids","poids_cons")
+
+# Vérification des NA dans poids 
+anyNA(cereales3$poids_cons)
+sum(is.na(cereales3$poids_cons))
+
+# (Pas de NA dans poids_cons)
+
+## Quantity conso en unite standard (kg)
+fusion [,poids_cons:=as.numeric(poids_cons)]
+fusion [, Qtty_achetee_kg:= poids_cons*Qtty_achat/1000]
+
+unique(fusion$Qtty_achetee_kg)
+
+###2) calculons le prix unitaire(en kg)
+
+unique(fusion$Value_achat)
+fusion [, prix_unitaire:= Value_achat/Qtty_achetee_kg]
+unique(fusion$prix_unitaire)
+
+###3) Calculons les depenses de consommations
+
+## Quantity conso en unite standard (kg)
+fusion [, Qtty_cons_kg:= poids_cons*Qtty_cons/1000]
+
+fusion [, depenses_cons:= Qtty_cons*prix_unitaire]
+
+d <- NULL
